@@ -9,7 +9,7 @@ mongoose.connect('mongodb+srv://omnistack:IRtkSHH9nHFn9Shh@cluster0-pqepg.mongod
     useNewUrlParser: true
 });
 
-server.use(cors)
+server.use(cors())
 server.use(express.json())
 server.use(routes);
 server.listen(3333);
