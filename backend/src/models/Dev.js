@@ -1,4 +1,4 @@
-const { Schema, model} = require('mongoose');
+const { Schema, model } = require('mongoose');
 
 const devSchema = new Schema({
     name: {
@@ -20,10 +20,10 @@ const devSchema = new Schema({
     }],
     dislikes: [{
         type: Schema.Types.ObjectId,
-        ref:'Dev',
+        ref: 'Dev',
     }],
 }, {
-    timestamps: true,  
+    timestamps: true,
 })
 
 module.exports = model('Dev', devSchema);

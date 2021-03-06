@@ -6,11 +6,11 @@ module.exports = {
         const { devId } = req.params
         const { user } = req.headers
 
-        const loggedDev = await Dev.findById(user)
         const targetDev = await Dev.findById(devId)
+        const loggedDev = await Dev.findById(user)
 
         if(!targetDev){
-            return res.status(400).json({ error: 'Dev not exist'})
+            return res.status(400).json({ error: `Dev doesn't exist`})
         }
 
         loggedDev.likes.push(targetDev._id)
@@ -23,6 +23,6 @@ module.exports = {
             console.log('Deu match!')
         }
 
-        return res.json(loggedDev)
+        return res.status(201).json(loggedDev)
     }
 }
