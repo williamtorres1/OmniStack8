@@ -1,35 +1,47 @@
-import React, { useState, useEffect } from 'react'
-import { KeyboardAvoidingView, Platform, StyleSheet, Image, TextInput, TouchableOpacity, Text } from 'react-native'
-import AsyncStorage from '@react-native-async-storage/async-storage'
+import React, {useState, useEffect} from 'react';
+import {
+  KeyboardAvoidingView,
+  Platform,
+  StyleSheet,
+  Image,
+  TextInput,
+  TouchableOpacity,
+  Text,
+} from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import api from '../services/api'
+import api from '../services/api';
 
-import logo from '../assets/logo.png'
+import logo from '../assets/logo.png';
 
-export default function Login( { navigation } ) {
-  const [user, setUser] = useState('')
+export default function Login({navigation}) {
+  const [user, setUser] = useState('');
 
   useEffect(() => {
     AsyncStorage.getItem('user').then(user => {
-      if(user) {
-        navigation.navigate('Main', { user })
+      if (user) {
+        navigation.navigate('Main', {user});
       }
-    })
-  }, []) 
+    });
+  }, [navigation]);
 
   async function handleLogin() {
-    
-    const response = await api.post('/devs', { username: user })
+    try {
+      console.log(`>> Sending ${user} to api`);
+      const response = await api.post('/devs', {username: user});
 
-    const { _id } = response.data
-    
-    await AsyncStorage.setItem('user', _id)
-    
-    navigation.navigate('Main', { user: _id})
+      const {_id} = response.data;
+
+      await AsyncStorage.setItem('user', _id);
+
+      navigation.navigate('Main', {user: _id});
+    } catch (err) {
+      return console.error(err);
+    }
   }
 
   return (
-    <KeyboardAvoidingView 
+    <KeyboardAvoidingView
       behavior="padding"
       enabled={Platform.OS === 'ios'}
       style={styles.container}>
@@ -38,6 +50,7 @@ export default function Login( { navigation } ) {
       <TextInput
         placeholder="Digite seu usuário no GitHub"
         placeholderTextColor="#999"
+        color="#999"
         autoCapitalize="none"
         autoCorrect={false}
         style={styles.input}
@@ -49,7 +62,7 @@ export default function Login( { navigation } ) {
         <Text style={styles.buttonText}>Enviar</Text>
       </TouchableOpacity>
     </KeyboardAvoidingView>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
@@ -58,7 +71,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#f5f5f5',
     alignItems: 'center',
     justifyContent: 'center',
-    padding: 30
+    padding: 30,
   },
 
   input: {
@@ -69,7 +82,7 @@ const styles = StyleSheet.create({
     borderColor: '#DDD',
     borderRadius: 4,
     marginTop: 20,
-    paddingHorizontal: 15
+    paddingHorizontal: 15,
   },
 
   button: {
@@ -79,12 +92,12 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     marginTop: 10,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
 
   buttonText: {
     color: '#FFF',
     fontWeight: 'bold',
-    fontSize: 16
+    fontSize: 16,
   },
-})
+});
