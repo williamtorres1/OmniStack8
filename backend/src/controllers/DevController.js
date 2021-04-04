@@ -38,6 +38,8 @@ module.exports = {
             bio,
             avatar
         })
+
+        console.log(`User: ${username} created.` )
         return res.status(201).json(dev);
     }
 };
